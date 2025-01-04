@@ -17,7 +17,7 @@ const Testimonial = () => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    axios.get("reviews.json").then((res) => {
+    axios.get("http://localhost:6600/reviews").then((res) => {
       setReviews(res.data);
     });
   }, []);
@@ -26,7 +26,7 @@ const Testimonial = () => {
       <SectionTitle subHeading="What Our Clients Say" heading="Testimonials" />
       <Swiper navigation={true} modules={[Navigation]} className="mySwiper">
         {reviews.map((review) => (
-          <SwiperSlide>
+          <SwiperSlide key={review._id}>
             <div className="text-center flex flex-col justify-center items-center gap-3 ">
             <Rating style={{ maxWidth: 180 }} value={review.rating} readOnly />
               <h1>{review.details}</h1>
