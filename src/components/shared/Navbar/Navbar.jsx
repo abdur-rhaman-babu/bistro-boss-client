@@ -4,11 +4,11 @@ import { AuthContext } from "../../../Provider/AuthProvider/AuthProvider";
 
 const Navbar = () => {
   const { user, signOutUser } = useContext(AuthContext);
-  const handleSignOut = () =>{
+  const handleSignOut = () => {
     signOutUser()
-    .then(()=>{})
-    .catch(err=> console.log('error', err))
-  }
+      .then(() => {})
+      .catch((err) => console.log("error", err));
+  };
 
   const navLinks = (
     <>
@@ -19,11 +19,22 @@ const Navbar = () => {
         <NavLink to="/menu">Menu</NavLink>
       </li>
       <li>
+        <NavLink to="/ourShop/salad">Our Shop</NavLink>
+      </li>
+      <li>
         <NavLink to="/secret">Secret</NavLink>
       </li>
 
       {user ? (
-        <><button onClick={handleSignOut} className="border ml-2 px-2 rounded-lg hover:bg-[#2b3440]">Sign Out</button></>
+        <>
+          <button
+            onClick={handleSignOut}
+            className="border ml-2 px-2 rounded-lg hover:bg-[#2b3440]"
+          >
+            Sign Out
+          </button>
+          <img className="h-10 w-10 ml-2 rounded-full" src={user?.photoURL} alt="" />
+        </>
       ) : (
         <>
           {" "}
@@ -36,13 +47,13 @@ const Navbar = () => {
   );
   return (
     <>
-      <div className="navbar fixed z-50 bg-black bg-opacity-30 text-white max-w-screen-xl">
+      <div className="navbar fixed z-50 bg-black bg-opacity-30 lg:text-white max-w-screen-xl">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-5 w-5 text-white"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -62,7 +73,7 @@ const Navbar = () => {
               {navLinks}
             </ul>
           </div>
-          <a className="btn btn-ghost text-xl">Bistro Boss</a>
+          <a className="btn btn-ghost text-xl text-white">Bistro Boss</a>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{navLinks}</ul>

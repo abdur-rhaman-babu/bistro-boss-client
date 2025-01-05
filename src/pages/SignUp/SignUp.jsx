@@ -1,10 +1,13 @@
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider/AuthProvider";
 
 const SignUp = () => {
-  const { createUser } = useContext(AuthContext);
+  const { createUser, userUpdateProfile, setUser } = useContext(AuthContext);
+  const location = useLocation()
+  const from = location?.state?.from?.pathname || "/";
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -12,9 +15,12 @@ const SignUp = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
+    const profile = { displayName: data.name, photoURL: data.photo };
     createUser(data.email, data.password).then((result) => {
+      setUser(result.user);
+      navigate(from, { replace: true });
       console.log(result.user);
+      userUpdateProfile(profile).then(() => {});
     });
   };
 
@@ -47,6 +53,20 @@ const SignUp = () => {
             </div>
             <div className="form-control">
               <label className="label">
+                <span className="label-text">Photo URL</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Photo url"
+                {...register("photo", { required: true })}
+                className="input input-bordered"
+              />
+              {errors.photo && (
+                <span className="text-red-600">Photo Url is required</span>
+              )}
+            </div>
+            <div className="form-control">
+              <label className="label">
                 <span className="label-text">Email</span>
               </label>
               <input
@@ -66,7 +86,7 @@ const SignUp = () => {
               <input
                 type="password"
                 placeholder="password"
-                {...register("password", { required: true, minLength:6 } )}
+                {...register("password", { required: true, minLength: 6 })}
                 className="input input-bordered"
               />
               {errors.password?.type === "required" && (
