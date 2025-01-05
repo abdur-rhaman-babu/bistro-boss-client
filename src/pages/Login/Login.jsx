@@ -1,32 +1,57 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   loadCaptchaEnginge,
   LoadCanvasTemplate,
-  LoadCanvasTemplateNoReload,
   validateCaptcha,
 } from "react-simple-captcha";
+import { AuthContext } from "../../Provider/AuthProvider/AuthProvider";
+import { FcGoogle } from "react-icons/fc";
 const Login = () => {
-  const captchaRef = useRef(null);
-  const [disabled, setDisabled] = useState(true)
+  const { signInUser, setUser, signInWithGoogle } = useContext(AuthContext);
+  const [disabled, setDisabled] = useState(true);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location?.state?.from?.pathname;
+  console.log(location);
   const handleLogin = (e) => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
-    const user = { email, password };
-    console.log(user);
+
+    signInUser(email, password).then((result) => {
+      setUser(result.user);
+      console.log(result.user);
+      if (from) {
+        navigate(from);
+      }else{
+        navigate('/')
+      }
+    });
+  };
+
+  const handleSignInWithGoogle = () => {
+    signInWithGoogle().then((result) => {
+      console.log(result.user);
+      if (from) {
+        navigate(from);
+      }else{
+        navigate('/')
+      }
+    });
   };
 
   useEffect(() => {
     loadCaptchaEnginge(6);
   }, []);
 
-  const handleValidateCaptcha = () => {
-    const user_captcha_value = captchaRef.current.value;
-    if(validateCaptcha(user_captcha_value)){
-      setDisabled(false)
-    }else{
-        setDisabled(true)
+  const handleValidateCaptcha = (e) => {
+    const user_captcha_value = e.target.value;
+    if (validateCaptcha(user_captcha_value)) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
     }
   };
 
@@ -77,23 +102,31 @@ const Login = () => {
                 <LoadCanvasTemplate />
               </label>
               <input
-                ref={captchaRef}
+                onBlur={handleValidateCaptcha}
                 type="text"
                 placeholder="type the text above"
                 name="captcha"
                 className="input input-bordered"
                 required
               />
-              <button
-                onClick={handleValidateCaptcha}
-                className="btn btn-outline btn-xs mt-3"
-              >
-                validate
-              </button>
+            </div>
+            <div
+              onClick={handleSignInWithGoogle}
+              className="flex cursor-pointer items-center justify-center gap-2 border p-2 rounded-lg"
+            >
+              <FcGoogle />
+              <span className="font-semibold">Sign with google</span>
             </div>
             <div className="form-control mt-6">
-              <button disabled={disabled} className="btn btn-primary">Login</button>
+              <button disabled={disabled} className="btn btn-primary">
+                Login
+              </button>
             </div>
+            <p>
+              <small>
+                Don't have an account <Link to="/signup">Sign up Now?</Link>
+              </small>
+            </p>
           </form>
         </div>
       </div>

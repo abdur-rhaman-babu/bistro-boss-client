@@ -3,7 +3,7 @@ import Navbar from "../components/shared/Navbar/Navbar";
 import Footer from "../components/shared/Footer/Footer";
 const Main = () => {
   const location = useLocation();
-  const hideNavbarFooter = location.pathname.includes("/login");
+  const hideNavbarFooter = location.pathname.includes("/login") || location.pathname.includes("/signup");
   return (
     <div>
       {hideNavbarFooter || <Navbar />}
