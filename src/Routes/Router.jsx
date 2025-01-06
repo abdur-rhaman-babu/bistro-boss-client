@@ -14,6 +14,11 @@ import Reservation from "../pages/DashBoard/Reservation/Reservation";
 import MyBooking from "../pages/DashBoard/MyBooking/MyBooking";
 import AddReview from "../pages/DashBoard/AddReview/AddReview";
 import PaymentHistory from "../pages/DashBoard/PaymentHistory/PaymentHistory";
+import AllUser from "../pages/DashBoard/AllUser/AllUser";
+import ManageItem from "../pages/DashBoard/ManageItem/ManageItem";
+import AddItem from "../pages/DashBoard/AddItem/AddItem";
+import ManageBooking from "../pages/DashBoard/ManageBooking/ManageBooking";
+import AdminHome from "../pages/DashBoard/AdminHome/AdminHome";
 
 export const router = createBrowserRouter([
     {
@@ -73,6 +78,26 @@ export const router = createBrowserRouter([
             {
                 path:'payment-history',
                 element:<PaymentHistory/>
+            },
+            {
+                path:'allUsers',
+                element:<AllUser/>
+            },
+            {
+                path:'manage-item',
+                element:<ManageItem/>
+            },
+            {
+                path:'add-items',
+                element:<AddItem/>
+            },
+            {
+                path:'manage-booking',
+                element:<ManageBooking/>
+            },
+            {
+                path:'admin-home',
+                element:<AdminHome/>
             }
         ]
     }
