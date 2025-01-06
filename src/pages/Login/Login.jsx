@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   loadCaptchaEnginge,
@@ -6,11 +6,11 @@ import {
   validateCaptcha,
 } from "react-simple-captcha";
 import { AuthContext } from "../../Provider/AuthProvider/AuthProvider";
-import { FcGoogle } from "react-icons/fc";
 import { toast } from "react-toastify";
 import { Helmet } from "react-helmet-async";
+import SocialLogin from "../../components/SocialLogin/SocialLogin";
 const Login = () => {
-  const { signInUser, setUser, signInWithGoogle } = useContext(AuthContext);
+  const { signInUser, setUser } = useContext(AuthContext);
   const [disabled, setDisabled] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
@@ -24,14 +24,6 @@ const Login = () => {
 
     signInUser(email, password).then((result) => {
       setUser(result.user);
-      console.log(result.user);
-      toast.success("Login Successfull");
-      navigate(from, { replace: true });
-    });
-  };
-
-  const handleSignInWithGoogle = () => {
-    signInWithGoogle().then((result) => {
       console.log(result.user);
       toast.success("Login Successfull");
       navigate(from, { replace: true });
@@ -53,9 +45,9 @@ const Login = () => {
 
   return (
     <>
-    <Helmet>
-      <title>Bistro Boss || Login</title>
-    </Helmet>
+      <Helmet>
+        <title>Bistro Boss || Login</title>
+      </Helmet>
       <div className="hero bg-base-200 min-h-screen">
         <div className="hero-content flex-col lg:flex-row">
           <div className="text-center lg:text-left">
@@ -110,13 +102,8 @@ const Login = () => {
                   required
                 />
               </div>
-              <div
-                onClick={handleSignInWithGoogle}
-                className="flex cursor-pointer items-center justify-center gap-2 border p-2 rounded-lg"
-              >
-                <FcGoogle />
-                <span className="font-semibold">Sign with google</span>
-              </div>
+
+              <SocialLogin />
               <div className="form-control mt-6">
                 <button disabled={disabled} className="btn btn-primary">
                   Login

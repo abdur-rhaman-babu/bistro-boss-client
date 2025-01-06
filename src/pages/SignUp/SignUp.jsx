@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider/AuthProvider";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import { toast } from "react-toastify";
+import SocialLogin from "../../components/SocialLogin/SocialLogin";
 
 const SignUp = () => {
   const { createUser, userUpdateProfile, setUser } = useContext(AuthContext);
@@ -105,6 +106,7 @@ const SignUp = () => {
                 <p className="text-red-600">Password is required</p>
               )}
             </div>
+            <SocialLogin/>
             <div className="form-control mt-6">
               <button className="btn btn-primary">Sign Up</button>
             </div>
