@@ -1,12 +1,12 @@
 import { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../../../Provider/AuthProvider/AuthProvider";
 import { FaShoppingCart } from "react-icons/fa";
 import useCart from "../../../Hooks/useCart";
 
 const Navbar = () => {
   const { user, signOutUser } = useContext(AuthContext);
-  const [cart] = useCart()
+  const [cart] = useCart();
   const handleSignOut = () => {
     signOutUser()
       .then(() => {})
@@ -39,7 +39,7 @@ const Navbar = () => {
           >
             Sign Out
           </button>
-          <img
+          <img referrerPolicy="no-referrer"
             className="h-10 w-10 ml-2 rounded-full"
             src={user?.photoURL}
             alt=""
@@ -89,11 +89,15 @@ const Navbar = () => {
           <ul className="menu menu-horizontal px-1">{navLinks}</ul>
         </div>
         <div className="navbar-end">
-          <div className="indicator">
-            <span className="indicator-item badge badge-secondary">{cart.length}</span>
-            <FaShoppingCart className="mr-4" size={25} />
-          </div>
-          <a className="btn">Button</a>
+          <Link to='dashboard/cart'>
+            <div className="indicator">
+              <span className="indicator-item badge badge-secondary">
+                {cart.length}
+              </span>
+              <FaShoppingCart className="mr-4" size={25} />
+            </div>
+          </Link>
+         
         </div>
       </div>
     </>

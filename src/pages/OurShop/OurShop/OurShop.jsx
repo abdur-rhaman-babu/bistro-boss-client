@@ -6,6 +6,7 @@ import useMenu from "../../../components/useMenu/useMenu";
 import ShopCard from "../../../components/ShopCard/ShopCard";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 const OurShop = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [menu] = useMenu();
@@ -18,6 +19,9 @@ const OurShop = () => {
   const soup = menu.filter((item) => item.category === "soup");
   return (
     <div>
+      <Helmet>
+        <title>Bistro Boss || our shop</title>
+      </Helmet>
       <Cover
         img={shopImg}
         bannerTitle="Our shop"
