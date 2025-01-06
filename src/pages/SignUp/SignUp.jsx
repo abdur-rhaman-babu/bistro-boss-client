@@ -1,13 +1,14 @@
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider/AuthProvider";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const { createUser, userUpdateProfile, setUser } = useContext(AuthContext);
-  const location = useLocation()
-  const from = location?.state?.from?.pathname || "/";
   const navigate = useNavigate();
+  const axiosPubic = useAxiosPublic();
   const {
     register,
     handleSubmit,
@@ -18,9 +19,20 @@ const SignUp = () => {
     const profile = { displayName: data.name, photoURL: data.photo };
     createUser(data.email, data.password).then((result) => {
       setUser(result.user);
-      navigate(from, { replace: true });
-      console.log(result.user);
-      userUpdateProfile(profile).then(() => {});
+      const user = {
+        email: data.email,
+        name: data.name,
+      };
+      userUpdateProfile(profile).then(() => {
+        axiosPubic.post("/users", user)
+        .then(res=>{
+          console.log(res.data)
+          if(res.data.insertedId){
+            toast.success('user successfully added')
+            navigate("/");
+          }
+        })
+      });
     });
   };
 
