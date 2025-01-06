@@ -9,7 +9,9 @@ import { MdReviews, MdWorkHistory } from "react-icons/md";
 import { NavLink, Outlet } from "react-router-dom";
 import "./Dashboard.css";
 import { FaBagShopping } from "react-icons/fa6";
+import useCart from "../../Hooks/useCart";
 const DashBoard = () => {
+  const [cart] = useCart();
   return (
     <div>
       <div className="flex items-start gap-5">
@@ -31,7 +33,7 @@ const DashBoard = () => {
                 to="cart"
                 className="flex items-center gap-2 uppercase p-2"
               >
-                <FaShoppingCart size={25} /> Cart
+                <FaShoppingCart size={25} /> Cart ({cart.length})
               </NavLink>
             </li>
             <li>
@@ -85,13 +87,19 @@ const DashBoard = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/menu" className="flex items-center gap-2 uppercase p-2">
+              <NavLink
+                to="/menu"
+                className="flex items-center gap-2 uppercase p-2"
+              >
                 <FaBars size={25} />
                 Menu
               </NavLink>
             </li>
             <li>
-              <NavLink to="/ourShop/salad" className="flex items-center gap-2 uppercase p-2">
+              <NavLink
+                to="/ourShop/salad"
+                className="flex items-center gap-2 uppercase p-2"
+              >
                 <FaBagShopping size={25} />
                 Shop
               </NavLink>
