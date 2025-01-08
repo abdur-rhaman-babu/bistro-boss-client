@@ -4,6 +4,7 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { MdDelete } from "react-icons/md";
 import { FaUsers } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 const AllUser = () => {
   const axiosSecure = useAxiosSecure();
   const { refetch, data: users = [] } = useQuery({
@@ -13,6 +14,17 @@ const AllUser = () => {
       return res.data;
     },
   });
+
+  const handleMakeAdmin = (user)=>{
+      axiosSecure.patch(`/users/${user._id}`)
+      .then(res=>{
+        console.log(res.data)
+        if(res.data.modifiedCount > 0){
+          refetch()
+          toast.success('user has been admin')
+        }
+      })
+  }
 
   const handleDeleteUser = (id) => {
     Swal.fire({
@@ -66,9 +78,11 @@ const AllUser = () => {
                   <td>{user.name}</td>
                   <td>{user.email}</td>
                   <td>
-                    <button className="bg-yellow-600 p-2 text-white text-xl">
+                    {
+                      user.role === 'admin' ? 'Admin' : <button onClick={()=> handleMakeAdmin(user)} className="bg-yellow-600 p-2 text-white text-xl">
                       <FaUsers />
                     </button>
+                    }
                   </td>
                   <td>
                     <button
