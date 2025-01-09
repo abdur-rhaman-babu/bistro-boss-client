@@ -19,6 +19,7 @@ import ManageItem from "../pages/DashBoard/ManageItem/ManageItem";
 import AddItem from "../pages/DashBoard/AddItem/AddItem";
 import ManageBooking from "../pages/DashBoard/ManageBooking/ManageBooking";
 import AdminHome from "../pages/DashBoard/AdminHome/AdminHome";
+import AdminRoute from "./AdminRoute/AdminRoute";
 
 export const router = createBrowserRouter([
     {
@@ -81,7 +82,7 @@ export const router = createBrowserRouter([
             },
             {
                 path:'allUsers',
-                element:<AllUser/>
+                element:<AdminRoute><AllUser/></AdminRoute>
             },
             {
                 path:'manage-item',
@@ -89,7 +90,7 @@ export const router = createBrowserRouter([
             },
             {
                 path:'add-items',
-                element:<AddItem/>
+                element:<AdminRoute><AddItem/></AdminRoute>
             },
             {
                 path:'manage-booking',
