@@ -1,14 +1,50 @@
 import { useForm } from "react-hook-form";
 import { FaUtensils } from "react-icons/fa";
+import useAxiosPublic from "../../../Hooks/useAxiosPublic";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { toast } from "react-toastify";
+const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const AddItem = () => {
+  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    console.log(data);
+    const imageFile = { image: data.image[0] };
+    // console.log(imageFile);
+    const res = await axiosPublic.post(image_hosting_api, imageFile, {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    });
+    // console.log(res.data);
+
+    if (res.data.success) {
+      const menuItem = {
+        name: data.name,
+        recipe: data.recipe,
+        category: data.category,
+        price: data.price,
+        image: res.data.data.display_url
+      };
+    //   console.log(menuItem)
+      const resItem = await axiosSecure.post('/menu', menuItem)
+    //   console.log(resItem.data)
+      if(resItem.data.insertedId){
+        toast.success(`${menuItem.name} is added`)
+        reset()
+      }
+    }
+  };
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -28,11 +64,14 @@ const AddItem = () => {
             <label className="label">
               <span className="label-text">Category*</span>
             </label>
-            <select defaultValue='default'
+            <select
+              defaultValue="default"
               {...register("category")}
               className="select select-bordered w-full"
             >
-              <option disabled value='default'>Select a catewgory?</option>
+              <option disabled value="default">
+                Select a catewgory?
+              </option>
               <option value="salad">Salad</option>
               <option value="pizza">Pizza</option>
               <option value="soup">Soup</option>
@@ -64,7 +103,11 @@ const AddItem = () => {
           ></textarea>
         </div>
         <div className="form-control w-full my-5">
-          <input {...register('image')} type="file" className="file-input w-full max-w-xs" />
+          <input
+            {...register("image")}
+            type="file"
+            className="file-input w-full max-w-xs"
+          />
         </div>
 
         <button className="bg-gradient-to-r text-white font-semibold to-[#b07d2f] from-[#876024] items-center gap-2 py-3 px-6 rounded-lg flex">
